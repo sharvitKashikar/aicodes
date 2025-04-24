@@ -26,16 +26,30 @@ def play_game():
     current_player = "X"
     for turn in range(9):
         print_board()
-        move = int(input(f"{current_player}'s turn. Choose position (1-9): ")) - 1
-        if board[move] != " ":
-            print("Position already taken! Try again.")
-            continue
+
+        # Input validation loop
+        while True:
+            move_input = input(f"{current_player}'s turn. Choose position (1-9): ")
+            if not move_input.isdigit():
+                print("❗ Please enter a valid number between 1 and 9.")
+                continue
+            move = int(move_input) - 1
+            if move < 0 or move > 8:
+                print("❗ Invalid position! Choose a number between 1 and 9.")
+                continue
+            if board[move] != " ":
+                print("❗ Position already taken! Try again.")
+                continue
+            break  # valid move
+
         board[move] = current_player
         if check_winner(current_player):
             print_board()
-            print(f"{current_player} wins!")
+            print(f"🎉 {current_player} wins!")
             return
+
         current_player = "O" if current_player == "X" else "X"
+
     print_board()
     print("It's a tie!")
 
